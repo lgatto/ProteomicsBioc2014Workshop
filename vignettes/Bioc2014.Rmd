@@ -1,0 +1,230 @@
+R / Bioconductor packages for Proteomics
+========================================
+
+[*Laurent Gatto*](http://proteome.sysbiol.cam.ac.uk/lgatto/),
+Computational Proteomics Unit,
+University of Cambridge, UK
+
+
+**Abstract** This workshop will give delegates the opportunity to
+discover and try some of the recent R / Bioconductor developments for
+proteomics. Topics covered will including support for open
+community-driven formats for raw data and identification results,
+packages for peptide-spectrum matching, quantitative proteomics, mass
+spectrometry (MS) and quantitation data processing, and
+visualisation. The workshop material will be a self-contained
+vignette/workflow including example data.
+
+```{r, env, message=FALSE, echo=FALSE}
+
+library("knitr")
+library("RforProteomics")
+library("mzR")
+library("mzID")
+library("MSnbase")
+library("rpx")
+library("MLInterfaces")
+library("pRoloc")
+library("pRolocdata")
+library("BiocInstaller")
+
+```
+
+**Foreword** This short tutorial is part of the
+  `ProteomicsBioc2014Workshop` package, available at
+  https://github.com/ComputationalProteomicsUnit/ProteomicsBioc2014Workshop.
+
+## Introduction
+
+```{r, pk, echo=FALSE, warning=FALSE, cache=TRUE}
+biocv <- as.character(biocVersion())
+pp <- proteomicsPackages(biocv)
+msp <- massSpectrometryPackages(biocv)
+msdp <- massSpectrometryDataPackages(biocv)
+```
+
+In Bioconductor version `r biocv`, there are respectively `r nrow(pp)`
+proteomics and `r nrow(msp)` mass spectrometry software packages and
+`r nrow(msdp)` mass spectrometry experiment packages. These respective
+packages can be extracted with the `proteomicsPackages()`,
+`massSpectrometryPackages()` and `massSpectrometryDataPackages()` and
+explored interactively.
+
+
+```{r, pp, eval=FALSE}
+library("RforProteomics")
+pp <- proteomicsPackages(biocv)
+display(pp)
+```
+
+## Data
+
+```{r, datatab, results='asis', echo=FALSE}
+
+datatab <-
+    data.frame(Type = c("raw", "identification", "quantitation",
+                   "peak lists", "other"),
+               Format = c("mzML, mzXML, netCDF, mzData",
+                   "mzIdentML", "mzQuantML", "mgf", "mzTab"),
+               Package = c(
+                   "[`mzR`](http://bioconductor.org/packages/release/bioc/html/mzR.html) (read)",
+                   "[`mzID`](http://bioconductor.org/packages/release/bioc/html/mzID.html) (read)",
+                   "",
+                   "[`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html) (read/write)", 
+                   "[`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html) (read/write)"))
+kable(datatab)
+
+```
+
+### Getting data from proteomics repositories
+
+Contemporary MS-based proteomics data is disseminated through the
+[ProteomeXchange](http://www.proteomexchange.org/) infrastructure,
+which centrally coordinates submission, storage and dissemination
+through multiple data repositories, such as the
+[PRIDE](https://www.ebi.ac.uk/pride/archive/) data base at the EBI for
+MS/MS experiments, [PASSEL](http://www.peptideatlas.org/passel/) at
+the ISB for SRM data and the
+[MassIVE](http://massive.ucsd.edu/ProteoSAFe/static/massive.jsp)
+ressource. The
+[`rpx`](http://www.bioconductor.org/packages/release/bioc/html/rpx.html)
+is an interface to ProteomeXchange and provides a basic and unified
+access to PX data.
+
+```{r, rpx}
+library("rpx")
+pxannounced()
+```
+
+```{r, pxd}
+px <- PXDataset("PXD000001")
+px
+pxtax(px)
+pxurl(px)
+pxref(px)
+pxfiles(px)
+```
+
+Data files can then be downloaded with the `pxget` function as
+illustrated below. Alternatively, the file is available on the
+workshop's Amazon virtual machine in `/data/Proteomics/data/`.
+
+```{r, mzf, echo=FALSE}
+mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+```
+
+```{r, pxget, eval = FALSE}
+mzf <- pxget(px, pxfiles(px)[6])
+mzf
+```
+
+### Handling raw MS data
+
+The `mzR` package provides an interface to the
+[proteowizard](http://proteowizard.sourceforge.net/) code base,
+the legacy RAMP is a non-sequential parser and other C/C++ code to
+access various raw data files, such as `mzML`, `mzXML`, `netCDF`, and
+`mzData`. The data is accessed on-disk, i.e it does not get loaded
+entirely in memory by default. The three main functions are
+`openMSfile` to create a file handle to a raw data file, `header` to
+extract metadata about the spectra contained in the file and `peaks`
+to extract one or multiple spectra of interest. Other functions such
+as `instrumentInfo`, ro `runInfo` can be used to gather general
+information about a run.
+
+```{r, rawms}
+library("mzR")
+ms <- openMSfile(mzf)
+ms
+```
+```{r, hd}
+hd <- header(ms)
+dim(hd)
+names(hd)
+```
+
+#### Exercise
+
+Extract the index of the MS2 spectrum with a high base peak intensity
+and plot its spectrum. Is the data centroided or in profile mode?
+
+
+### Handling identification data
+
+The `RforProteomics` package distributes a small identification result
+file (see
+`?TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzid`) that we
+load and parse using infrastructure from the 
+[`mzID`](http://bioconductor.org/packages/release/bioc/html/mzID.html)
+package.
+
+```{r, id, cache=TRUE}
+library("mzID")
+
+f <- dir(system.file("extdata", package = "ProteomicsBioc2014Workshop"),
+         pattern = "mzid", full.names=TRUE)
+id <- mzID(f)
+id
+```
+
+
+
+
+### MS/MS database search
+
+### High-level data interface
+
+### Quantitation
+
+### Importing third-party data
+
+```{r, mztab}
+mztf <- pxget(px, pxfiles(px)[2])
+mzt <- readMzTabData(mztf, what = "PEP")
+mzt
+```
+## Data processing and analysis
+
+### Normalisation
+
+### Statistical analysis
+
+### Machine learning
+
+The
+[`MLInterfaces`](http://www.bioconductor.org/packages/release/bioc/html/MLInterfaces.html)
+package provides a unified interface to a wide range of machine
+learning algorithms. Initially developed for microarray and
+`ExpressionSet` instances, the
+[`pRoloc`](http://www.bioconductor.org/packages/release/bioc/html/pRoloc.html)
+package enables application of these algorithms to `MSnSet` data.
+
+```{r, ml}
+library("MLInterfaces")
+library("pRoloc")
+library("pRolocdata")
+data(dunkley2006)
+traininds <- which(fData(dunkley2006)$markers != "unknown")
+ans <- MLearn(markers ~ ., data = t(dunkley2006), knnI(k = 5), traininds)
+ans
+kcl <- MLearn( ~ ., data = dunkley2006, kmeansI, centers = 5)
+kcl
+```
+
+```{r, kmeansplot}
+plot(kcl, exprs(dunkley2006))
+```
+
+## Visualisation
+
+## Annotation
+- biomaRt
+- GO.db, ...
+- rols
+- hpar
+
+## Session information
+
+```{r, si}
+print(sessionInfo(), local = FALSE)
+```
