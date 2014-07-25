@@ -160,19 +160,57 @@ package.
 
 ```{r, id, cache=TRUE}
 library("mzID")
-
 f <- dir(system.file("extdata", package = "ProteomicsBioc2014Workshop"),
          pattern = "mzid", full.names=TRUE)
 id <- mzID(f)
 id
 ```
 
+Various data can be extracted from the `mzID` object, using one the
+accessor functions such as `database`, `scans`, `peptides`, ... The
+object can also be converted into a `data.frame` using the `flatten`
+function.
 
+#### Exercise
 
+Is there are relation between the length of a protein and the number
+of peptides of identified peptides, conditioned by the (average)
+e-value of the identifications?
+
+```{r, echo = FALSE, eval=FALSE}
+fid <- flatten(id)
+x <- by(fid, fid$accession, function(x)
+    c(unique(x$length),
+      length(unique(x$pepseq)),
+      mean(x$'ms-gf:specevalue')))
+x <- data.frame(do.call(rbind, x))
+colnames(x) <- c("plength", "npep", "eval")
+x$bins <- cut(x$eval, summary(x$eval))
+library("lattice")
+xyplot(plength ~ npep | bins, data = x)
+```
 
 ### MS/MS database search
 
+While searches are generally performed using third-party software
+independently of R or can be started from R using a `system` call, the
+[`rTANDEM`](http://www.bioconductor.org/packages/release/bioc/html/rTANDEM.html)
+package allows one to execute such searches uwing the X!Tandem
+engine. The
+[`shinyTANDEM`](http://www.bioconductor.org/packages/release/bioc/html/shinyTANDEM.html)
+provides a interactive interface to explore the search results.
+
+```{r, rtandem, eval=FALSE}
+library("rTANDEM")
+?rtandem
+library("shinyTANDEM")
+?shinyTANDEM
+```
+
 ### High-level data interface
+
+The above sections introduced low-level interfaces to raw and
+identification results. The `MSnbase` package 
 
 ### Quantitation
 
