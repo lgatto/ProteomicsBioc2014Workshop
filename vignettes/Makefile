@@ -3,7 +3,7 @@ all:
 
 setvars:
 ifeq (${R_HOME},)
-R_HOME= $(shell R-stable RHOME)
+R_HOME= $(shell R RHOME)
 endif
 
 .PHONY: clean allclean all
