@@ -27,6 +27,8 @@ library("MLInterfaces")
 library("pRoloc")
 library("pRolocdata")
 library("BiocInstaller")
+library("rTANDEM")
+library("shinyTANDEM")
 
 ```
 
@@ -253,7 +255,7 @@ identFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
 identFile
      
 ## create basic MSnExp
-msexp <- readMSData(quantFile, verbose=FALSE2)
+msexp <- readMSData(quantFile, verbose=FALSE)
      
 ## add identification information
 msexp <- addIdentificationData(msexp, identFile)
