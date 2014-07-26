@@ -139,6 +139,7 @@ library("mzR")
 ms <- openMSfile(mzf)
 ms
 ```
+
 ```{r, hd}
 hd <- header(ms)
 dim(hd)
@@ -147,9 +148,23 @@ names(hd)
 
 #### Exercise
 
-Extract the index of the MS2 spectrum with a high base peak intensity
-and plot its spectrum. Is the data centroided or in profile mode?
+Extract the index of the MS2 spectrum with the highest base peak
+intensity and plot its spectrum. Is the data centroided or in profile
+mode?
 
+```{r, ex_raw, echo=FALSE, eval=FALSE}
+hd2 <- hd[hd$msLevel == 2, ]
+i <- which.max(hd2$basePeakIntensity)
+hd2[i, ]
+pi <- peaks(ms, hd2[i, 1])
+plot(pi, type = "h")
+mz <- hd2[i, "basePeakMZ"]
+plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
+
+pj <- peaks(ms, 100)
+plot(pj, type = "l")
+plot(pj, type = "l", xlim = c(536,540))
+```
 
 ### Handling identification data
 
@@ -179,7 +194,7 @@ Is there are relation between the length of a protein and the number
 of peptides of identified peptides, conditioned by the (average)
 e-value of the identifications?
 
-```{r, echo = FALSE, eval=FALSE}
+```{r, ex_id, echo = FALSE, eval=FALSE}
 fid <- flatten(id)
 x <- by(fid, fid$accession, function(x)
     c(unique(x$length),
@@ -269,7 +284,17 @@ plot(msexp[[1]], full=TRUE)
 
 ### Quantitation
 
-Summary table.
+```{r, quanttab, echo=FALSE, results='asis'}
+
+qtb <- matrix(c("XIC", "Counting", "SILAC, 15N", "iTRAQ, TMT"),
+              nrow = 2, ncol = 2)
+dimnames(qtb) <- list(
+    'MS level' = c("MS1", "MS2"),
+    'Quantitation' = c("Label-free", "Labelled"))
+
+kable(qtb)
+
+```
 
 An `MSnExp` is converted to an `MSnSet` by the `quantitation` method.
 
