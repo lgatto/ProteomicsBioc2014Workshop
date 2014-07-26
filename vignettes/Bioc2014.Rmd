@@ -116,12 +116,11 @@ Data files can then be downloaded with the `pxget` function as
 illustrated below. Alternatively, the file is available on the
 workshop's Amazon virtual machine in `/data/Proteomics/data/`.
 
-```{r, mzf, echo=FALSE}
-mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
-```
-
 ```{r, pxget, eval = FALSE}
-mzf <- pxget(px, pxfiles(px)[6])
+mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+mzf <- file.path("/data/Protepmics/data", mzf)
+if (!file.exists(mzf))
+    mzf <- pxget(px, pxfiles(px)[6])
 mzf
 ```
 
