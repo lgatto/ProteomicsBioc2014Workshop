@@ -162,8 +162,8 @@ package.
 
 ```{r, id, cache=TRUE}
 library("mzID")
-f <- dir(system.file("extdata", package = "ProteomicsBioc2014Workshop"),
-         pattern = "mzid", full.names=TRUE)
+(f <- dir(system.file("extdata", package = "ProteomicsBioc2014Workshop"),
+         pattern = "mzid", full.names=TRUE))
 id <- mzID(f)
 id
 ```
@@ -281,11 +281,19 @@ fData(msset)
 
 ### Importing third-party data
 
+The PSI `mzTab` file format is aimed at providing a simpler (than XML
+formats) and more accessible file format to the wider community. It is
+composed of a key-value metadata section and petide/protein/small
+molecule tabular sections. 
+
 ```{r, mztab}
 mztf <- pxget(px, pxfiles(px)[2])
 mzt <- readMzTabData(mztf, what = "PEP")
 mzt
 ```
+
+It is also possible to import arbitray spreadsheets as `MSnSet`
+objects into R with the `readMSnSet2` function.
 
 `readMSnSet2`
 
