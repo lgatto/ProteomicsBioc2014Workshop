@@ -210,9 +210,72 @@ library("shinyTANDEM")
 ### High-level data interface
 
 The above sections introduced low-level interfaces to raw and
-identification results. The `MSnbase` package 
+identification results. The
+[`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html)
+package provides abstractions for raw data through the `MSnExp` class
+and containers for quantification data via the `MSnSet` class. Both
+store the actual assay data (spectra or quantitation matrix) and
+sample and feature metadata. The figure below give a schematics of an
+`MSnSet` instance (see '?MSnSet' for more details).
+
+```{r, msnset, echo=FALSE, fig.width = 5, fig.height = 7}
+plot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
+rect(0, 0, 3, 1.9)
+rect(0, 2, 3, 10)
+rect(3.05, 2, 5, 10)
+
+segments(seq(0, 3, length.out = 7),
+         rep(0, 7),
+         seq(0, 3, length.out = 7),
+         rep(10, 7),
+         lty = "dotted")
+
+segments(rep(0, 50),
+         seq(2, 10, length.out = 50),
+         rep(5, 100),
+         seq(2, 10, length.out = 50),
+         lty = "dotted")
+
+text(1.5, 1, "sample metadata", cex = 1.5)
+text(1.5, 6, "assay data", cex = 1.5)
+text(4, 6, "feature\nmetadata", cex = 1.5)
+```
+
+```{r, msnbase}
+library("MSnbase")
+quantFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
+                 full.name = TRUE, pattern = "mzXML$")
+quantFile
+
+## find path to a mzIdentML file
+identFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
+                 full.name = TRUE, pattern = "mzid$")
+identFile
+     
+## create basic MSnExp
+msexp <- readMSData(quantFile, verbose=FALSE2)
+     
+## add identification information
+msexp <- addIdentificationData(msexp, identFile)
+
+msexp
+fData(msexp)
+
+msexp[[1]]
+plot(msexp[[1]], full=TRUE)
+```
 
 ### Quantitation
+
+Summary table.
+
+An `MSnExp` is converted to an `MSnSet` by the `quantitation` method.
+
+```{r, quantitraq}
+msset <- quantify(msexp, method = "trap", reporters = iTRAQ4, verbose=FALSE)
+exprs(msset)
+fData(msset)
+```
 
 ### Importing third-party data
 
@@ -221,6 +284,9 @@ mztf <- pxget(px, pxfiles(px)[2])
 mzt <- readMzTabData(mztf, what = "PEP")
 mzt
 ```
+
+`readMSnSet2`
+
 ## Data processing and analysis
 
 ### Normalisation
@@ -245,13 +311,20 @@ data(dunkley2006)
 traininds <- which(fData(dunkley2006)$markers != "unknown")
 ans <- MLearn(markers ~ ., data = t(dunkley2006), knnI(k = 5), traininds)
 ans
-kcl <- MLearn( ~ ., data = dunkley2006, kmeansI, centers = 5)
-kcl
 ```
 
-```{r, kmeansplot}
+```{r, clust}
+kcl <- MLearn( ~ ., data = dunkley2006, kmeansI, centers = 12)
+kcl
 plot(kcl, exprs(dunkley2006))
 ```
+
+```{r, clust2}
+hcl <- MLearn( ~ ., data = t(dunkley2006), hclustI(distFun =  dist, cutParm = list(k = 4)))
+hcl
+plot(hcl, exprs(t(dunkley2006)))
+```
+
 
 ## Visualisation
 

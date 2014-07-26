@@ -14,10 +14,10 @@ Bioc2014.html: Bioc2014.Rmd
 clean:	
 	rm -f .Rhistory
 	rm -f *~
-	rm -f cache figure
 	rm -rf output*xml
 
 allclean: clean 
-	rm -rf Bioc2014.md Bioc2014.html
+	rm -f Bioc2014.md Bioc2014.html
+	rm -rf cache figure
 
 
