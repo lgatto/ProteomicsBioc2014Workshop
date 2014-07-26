@@ -118,7 +118,7 @@ workshop's Amazon virtual machine in `/data/Proteomics/data/`.
 
 ```{r, pxget, eval = FALSE}
 mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
-mzf <- file.path("/data/Protepmics/data", mzf)
+mzf <- file.path("/data/Proteomics/data", mzf)
 if (!file.exists(mzf))
     mzf <- pxget(px, pxfiles(px)[6])
 mzf
@@ -237,7 +237,7 @@ package provides abstractions for raw data through the `MSnExp` class
 and containers for quantification data via the `MSnSet` class. Both
 store the actual assay data (spectra or quantitation matrix) and
 sample and feature metadata. The figure below give a schematics of an
-`MSnSet` instance (see '?MSnSet' for more details).
+`MSnSet` instance. 
 
 ```{r, msnset, echo=FALSE, fig.width = 5, fig.height = 7}
 plot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
