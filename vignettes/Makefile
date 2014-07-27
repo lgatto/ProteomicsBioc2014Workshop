@@ -9,7 +9,7 @@ endif
 .PHONY: clean allclean all
 
 Bioc2014.html: Bioc2014.Rmd
-	"$(R_HOME)/bin/Rscript" -e "library('knitr'); knit2html('Bioc2014.Rmd')"
+	"$(R_HOME)/bin/Rscript" -e "library('knitr'); knit('Bioc2014.Rmd'); library('rmarkdown'); render('Bioc2014.md')"
 
 clean:	
 	rm -f .Rhistory
