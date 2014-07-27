@@ -5,16 +5,12 @@
 
 ---
 title: "R / Bioconductor packages for Proteomics"
-author: "Laurent Gatto - <lg390@cam.ac.uk>"
+author: "[Laurent Gatto](http://proteome.sysbiol.cam.ac.uk/lgatto/)"
 output:
   html_document:
     toc: true
     theme: united
 ---
-
-[*Laurent Gatto*](http://proteome.sysbiol.cam.ac.uk/lgatto/),
-Computational Proteomics Unit,
-University of Cambridge, UK
 
 
 **Abstract** This workshop will give delegates the opportunity to
@@ -333,7 +329,7 @@ Other MS2 quantitation methods available in `quantify` include the
 (normalised) spectral index `SI` and (normalised) spectral abundance
 factor `SAF` or simply a simple count method.
 
-```{r}
+```{r, lfms2}
 si <- quantify(msexp, method = "SIn")
 exprs(si)
      
@@ -371,7 +367,7 @@ objects into R with the `readMSnSet2` function. The main 2 arguments
 of the function are (1) a text-based spreadsheet and (2) column names
 of indices that identify the quantitation data.
 
-```{r}
+```{r, readmsnset2}
 csv <- dir(system.file ("extdata" , package = "pRolocdata"),
            full.names = TRUE, pattern = "pr800866n_si_004-rep1.csv")
 getEcols(csv, split = ",")
