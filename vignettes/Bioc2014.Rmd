@@ -3,8 +3,14 @@
 %\VignetteIndexEntry{Bioc2014}
 -->
 
-R / Bioconductor packages for Proteomics
-========================================
+---
+title: "R / Bioconductor packages for Proteomics"
+author: "Laurent Gatto - <lg390@cam.ac.uk>"
+output:
+  html_document:
+    toc: true
+    theme: united
+---
 
 [*Laurent Gatto*](http://proteome.sysbiol.cam.ac.uk/lgatto/),
 Computational Proteomics Unit,
