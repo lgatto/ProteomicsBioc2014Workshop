@@ -23,6 +23,9 @@ vignette/workflow including example data.
 ```{r, env, message=FALSE, echo=FALSE}
 
 library("knitr")
+
+opts_knit$set(error = FALSE)
+
 library("RforProteomics")
 library("mzR")
 library("mzID")
@@ -38,8 +41,8 @@ library("shinyTANDEM")
 ```
 
 **Foreword** This short tutorial is part of the
-  `ProteomicsBioc2014Workshop` package, available at
-  https://github.com/ComputationalProteomicsUnit/ProteomicsBioc2014Workshop.
+`ProteomicsBioc2014Workshop` package, available at
+https://github.com/ComputationalProteomicsUnit/ProteomicsBioc2014Workshop.
 
 ## Introduction
 
@@ -237,8 +240,13 @@ identification results. The
 package provides abstractions for raw data through the `MSnExp` class
 and containers for quantification data via the `MSnSet` class. Both
 store the actual assay data (spectra or quantitation matrix) and
-sample and feature metadata. The figure below give a schematics of an
-`MSnSet` instance. 
+sample and feature metadata, accessed with `spectra` (or the
+`[`, `[[` operators) or `exprs`, `pData` and `fData`.
+
+The figure below give a schematics of an `MSnSet` instance and the
+relation between the assay data and the respective feature and sample
+metadata.
+
 
 ```{r, msnset, echo=FALSE, fig.width = 5, fig.height = 7}
 plot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
@@ -315,6 +323,30 @@ exprs(msset)
 fData(msset)
 ```
 
+Other MS2 quantitation methods available in `quantify` include the
+(normalised) spectral index `SI` and (normalised) spectral abundance
+factor `SAF` or simply a simple count method.
+
+```{r}
+si <- quantify(msexp, method = "SIn")
+exprs(si)
+     
+saf <- quantify(msexp, method = "NSAF")
+exprs(saf)
+```
+
+Note that spectra that have not been assigned any peptide (`NA`) or
+that match non-unique peptides (`npsm > 1`) are discarded in the
+counting process.
+
+
+The
+[`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
+package supports quantitation from centroided `mgf` peak lists or its
+own tab-separated files that can be generated from Mascsot and Phenyx
+vendor files.
+
+
 ### Importing third-party data
 
 The PSI `mzTab` file format is aimed at providing a simpler (than XML
@@ -348,6 +380,9 @@ head(fData(res))
 ### Normalisation
 
 ### Statistical analysis
+
+R in general and Bioconductor in particular are particularly well
+suited for the statistical analysis of data.
 
 ### Machine learning
 
@@ -389,6 +424,13 @@ plot(hcl, exprs(t(dunkley2006)))
 - GO.db, ...
 - rols
 - hpar
+
+## Other relevant packages
+
+- Analysis of post translational modification with `isobar`.
+- Spatial proteomics with `pRoloc`.
+- Analysis of label-free data from a Synapt G2 (including ion
+  mobility) with `synapter`.
 
 ## Session information
 
