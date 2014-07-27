@@ -64,7 +64,7 @@ pp <- proteomicsPackages(biocv)
 display(pp)
 ```
 
-## Data
+## Mass spectrometry data
 
 ```{r, datatab, results='asis', echo=FALSE}
 
@@ -228,7 +228,8 @@ library("shinyTANDEM")
 ?shinyTANDEM
 ```
 
-### High-level data interface
+
+## High-level data interface
 
 The above sections introduced low-level interfaces to raw and
 identification results. The
@@ -262,28 +263,34 @@ text(1.5, 6, "assay data", cex = 1.5)
 text(4, 6, "feature\nmetadata", cex = 1.5)
 ```
 
+The `readMSData` will parse the raw data, extract the MS2 spectra and
+construct an MS experiment file.
+
 ```{r, msnbase}
 library("MSnbase")
 quantFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
                  full.name = TRUE, pattern = "mzXML$")
 quantFile
+msexp <- readMSData(quantFile, verbose=FALSE)
+msexp
+```
 
+The identification results stemming from the same raw data file can
+then be used to add PMS matches.
+
+```{r, addid}
 ## find path to a mzIdentML file
 identFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
                  full.name = TRUE, pattern = "mzid$")
 identFile
-     
-## create basic MSnExp
-msexp <- readMSData(quantFile, verbose=FALSE)
-     
-## add identification information
 msexp <- addIdentificationData(msexp, identFile)
-
-msexp
 fData(msexp)
+```
 
+```{r, specplot}
 msexp[[1]]
 plot(msexp[[1]], full=TRUE)
+as(msexp[[1]], "data.frame")[100:105, ]
 ```
 
 ### Quantitation
@@ -322,9 +329,19 @@ mzt
 ```
 
 It is also possible to import arbitray spreadsheets as `MSnSet`
-objects into R with the `readMSnSet2` function.
+objects into R with the `readMSnSet2` function. The main 2 arguments
+of the function are (1) a text-based spreadsheet and (2) column names
+of indices that identify the quantitation data.
 
-`readMSnSet2`
+```{r}
+csv <- dir(system.file ("extdata" , package = "pRolocdata"),
+           full.names = TRUE, pattern = "pr800866n_si_004-rep1.csv")
+getEcols(csv, split = ",")
+ecols <- 7:10
+res <- readMSnSet2(csv, ecols)
+head(exprs(res))
+head(fData(res))
+```
 
 ## Data processing and analysis
 
