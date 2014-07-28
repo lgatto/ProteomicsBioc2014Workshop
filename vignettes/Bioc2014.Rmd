@@ -397,7 +397,7 @@ head(fData(res))
 
 ## Data processing and analysis
 
-### Normalisation
+### Processing and normalisation
 
 Each different types of quantitative data will require their own
 pre-processing and normalisation steps. Both `isobar` and `MSnbase`
