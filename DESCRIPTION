@@ -1,6 +1,6 @@
 Package: ProteomicsBioc2014Workshop
 Title: Bioc2014 workshop on R / Bioconductor packages for Proteomics 
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: c(person("Laurent", "Gatto", role=c("aut", "cre"),
                     email="lg390@cam.ac.uk"))
 Maintainer: Laurent Gatto <lg390@cam.ac.uk>
