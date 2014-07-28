@@ -95,7 +95,7 @@ through multiple data repositories, such as the
 MS/MS experiments, [PASSEL](http://www.peptideatlas.org/passel/) at
 the ISB for SRM data and the
 [MassIVE](http://massive.ucsd.edu/ProteoSAFe/static/massive.jsp)
-ressource. The
+resource. The
 [`rpx`](http://www.bioconductor.org/packages/release/bioc/html/rpx.html)
 is an interface to ProteomeXchange and provides a basic and unified
 access to PX data.
@@ -143,7 +143,7 @@ entirely in memory by default. The three main functions are
 `openMSfile` to create a file handle to a raw data file, `header` to
 extract metadata about the spectra contained in the file and `peaks`
 to extract one or multiple spectra of interest. Other functions such
-as `instrumentInfo`, ro `runInfo` can be used to gather general
+as `instrumentInfo`, or `runInfo` can be used to gather general
 information about a run.
 
 ```{r, rawms}
@@ -224,7 +224,7 @@ xyplot(plength ~ npep | bins, data = x)
 While searches are generally performed using third-party software
 independently of R or can be started from R using a `system` call, the
 [`rTANDEM`](http://www.bioconductor.org/packages/release/bioc/html/rTANDEM.html)
-package allows one to execute such searches uwing the X!Tandem
+package allows one to execute such searches using the X!Tandem
 engine. The
 [`shinyTANDEM`](http://www.bioconductor.org/packages/release/bioc/html/shinyTANDEM.html)
 provides a interactive interface to explore the search results.
@@ -364,14 +364,14 @@ counting process.
 **See also** The
 [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
 package supports quantitation from centroided `mgf` peak lists or its
-own tab-separated files that can be generated from Mascsot and Phenyx
+own tab-separated files that can be generated from Mascot and Phenyx
 vendor files.
 
 ### Importing third-party data
 
 The PSI `mzTab` file format is aimed at providing a simpler (than XML
 formats) and more accessible file format to the wider community. It is
-composed of a key-value metadata section and petide/protein/small
+composed of a key-value metadata section and peptide/protein/small
 molecule tabular sections. 
 
 ```{r, mztab}
@@ -440,7 +440,7 @@ plot0(qnt, qnt.crct)
 
 Various normalisation methods can be applied the `MSnSet` instances
 using the `normalise` method: variance stabilisation (`vsn`), quantile
-(`quantiles`), median or mean centering (`center.media` or
+(`quantiles`), median or mean centring (`center.media` or
 `center.mean`), ...
 
 ```{r, norm, fig.align='center'}
@@ -448,7 +448,7 @@ qnt.crct.nrm <- normalise(qnt.crct,"quantiles")
 plot0(qnt, qnt.crct.nrm)
 ```
 
-The `combineFeatures` method combines spectra/petides quantitation
+The `combineFeatures` method combines spectra/peptides quantitation
 values into protein data. The grouping is defined by the `groupBy`
 parameter, which is generally taken from the feature metadata (protein
 accessions, for example).
@@ -488,8 +488,8 @@ a TMT 6-plex with the following design:
    10:5:2.5:1:2.5:10, bovine serum albumin (BSA) at 1:2.5:5:10:5:1,
    rabbit glycogen phosphorylase (PHO) at 2:2:2:2:1:1 and bovin
    cytochrome C (CYT) at 1:1:1:1:1:2. Proteins were then digested,
-   dierentially labelled with TMT reagents, fractionated by reverse
-   phase nano ow UPLC (nanoACQUITY, Waters), and analysed on an LTQ
+   differentially labelled with TMT reagents, fractionated by reverse
+   phase nanoflow UPLC (nanoACQUITY, Waters), and analysed on an LTQ
    Orbitrap Velos mass spectrometer (Thermo Scientic).
 
 Explore the `mzt` data using some of the illustrated functions. The
@@ -504,7 +504,7 @@ vignette, have been produced using the same data.
 
 R in general and Bioconductor in particular are well suited for the
 statistical analysis of data. Several packages provide dedicated
-ressources for proteomics data:
+resources for proteomics data:
 
 - [`MSstats`](http://www.bioconductor.org/packages/release/bioc/html/MSstats.html):
   A set of tools for statistical relative protein significance
@@ -597,7 +597,7 @@ package.
 - Analysis of MALDI data with the
   [`MALDIquant`](http://cran.r-project.org/web/packages/MALDIquant/index.html)
   package.
-- Access to the Protemics Standard Initiative Common QUery InterfaCe
+- Access to the Proteomics Standard Initiative Common QUery InterfaCe
   with the
   [`PSICQUIC`](http://www.bioconductor.org/packages/release/bioc/html/PSICQUIC.html)
   package.
