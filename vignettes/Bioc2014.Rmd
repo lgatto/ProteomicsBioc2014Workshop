@@ -592,6 +592,10 @@ package.
   mobility) with `synapter`.
 - Analysis of spatial proteomics data with `pRoloc`.
 - Analysis of MALDI data with the `MALDIquant` package.
+- Access to the Protemics Standard Initiative Common QUery InterfaCe
+  with the
+  [`PSICQUIC`](http://www.bioconductor.org/packages/release/bioc/html/PSICQUIC.html)
+  package.
 
 Additional relevant packages are described in the
 [`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
