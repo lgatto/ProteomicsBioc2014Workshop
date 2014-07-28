@@ -21,8 +21,12 @@ spectrometry (MS) and quantitation data processing, and
 visualisation. The workshop material will be a self-contained
 vignette/workflow including example data.
 
-```{r, env, message=FALSE, echo=FALSE}
+This short tutorial is part of the `ProteomicsBioc2014Workshop`
+package (version `r packageVersion("ProteomicsBioc2014Workshop")`),
+available at
+https://github.com/ComputationalProteomicsUnit/ProteomicsBioc2014Workshop.
 
+```{r, env, message=FALSE, echo=FALSE, warning=FALSE}
 library("knitr")
 opts_knit$set(error = FALSE)
 
@@ -37,12 +41,7 @@ library("pRolocdata")
 library("BiocInstaller")
 library("rTANDEM")
 library("shinyTANDEM")
-
 ```
-
-**Foreword** This short tutorial is part of the
-`ProteomicsBioc2014Workshop` package, available at
-https://github.com/ComputationalProteomicsUnit/ProteomicsBioc2014Workshop.
 
 ## Introduction
 
@@ -203,9 +202,9 @@ function.
 
 #### Exercise
 
-Is there are relation between the length of a protein and the number
-of peptides of identified peptides, conditioned by the (average)
-e-value of the identifications?
+Is there a relation between the length of a protein and the number of
+identified peptides, conditioned by the (average) e-value of the
+identifications?
 
 ```{r, ex_id, echo = FALSE, eval=FALSE}
 fid <- flatten(id)
@@ -292,7 +291,7 @@ msexp
 ```
 
 The identification results stemming from the same raw data file can
-then be used to add PMS matches.
+then be used to add PSM matches.
 
 ```{r, addid}
 ## find path to a mzIdentML file
@@ -380,7 +379,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 (mzt <- readMzTabData(mztf, what = "PEP"))
 ```
 
-It is also possible to import arbitray spreadsheets as `MSnSet`
+It is also possible to import arbitrary spreadsheets as `MSnSet`
 objects into R with the `readMSnSet2` function. The main 2 arguments
 of the function are (1) a text-based spreadsheet and (2) column names
 of indices that identify the quantitation data.
@@ -503,9 +502,9 @@ vignette, have been produced using the same data.
 
 ### Statistical analysis
 
-R in general and Bioconductor in particular are particularly well
-suited for the statistical analysis of data. Several packages provide
-dedicated ressources for proteomics data:
+R in general and Bioconductor in particular are well suited for the
+statistical analysis of data. Several packages provide dedicated
+ressources for proteomics data:
 
 - [`MSstats`](http://www.bioconductor.org/packages/release/bioc/html/MSstats.html):
   A set of tools for statistical relative protein significance
@@ -570,10 +569,21 @@ plot(hcl, exprs(t(dunkley2006)))
 
 
 ## Annotation
-- biomaRt
-- GO.db, ...
-- rols
-- hpar
+
+All the
+[Bioconductor annotation infrastructure](http://bioconductor.org/help/workflows/annotation/annotation/),
+such as
+[`biomaRt`](http://bioconductor.org/packages/release/bioc/html/biomaRt.html),
+[`GO.db`](http://www.bioconductor.org/packages/release/data/annotation/html/GO.db.html),
+organism specific annotations, .. are directly relevant to the
+analysis of proteomics data. Some proteomics-centred annotations such
+as the PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI
+2.5) or Protein Modifications are available through the
+[`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html). Data
+from the [Human Protein Atlas](http://www.proteinatlas.org/) is
+available via the
+[`hpar`](http://www.bioconductor.org/packages/release/bioc/html/hpar.html)
+package.
 
 ## Other relevant packages/pipelines
 
@@ -582,6 +592,10 @@ plot(hcl, exprs(t(dunkley2006)))
   mobility) with `synapter`.
 - Analysis of spatial proteomics data with `pRoloc`.
 - Analysis of MALDI data with the `MALDIquant` package.
+
+Additional relevant packages are described in the
+[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+vignette. 
 
 ## Session information
 
