@@ -467,7 +467,7 @@ will be guided by many factors, such as degree and (non-)random nature
 of the missingness. Missing value in `MSnSet` instances can be
 filtered out and imputed using the `filterNA` and `impute` functions.
 
-```{r, impute, fig.align='center')
+```{r, impute, fig.align='center'}
 set.seed(1)
 qnt0 <- qnt
 exprs(qnt0)[sample(prod(dim(qnt0)), 10)] <- NA
