@@ -423,6 +423,9 @@ processingData(qnt.crct)
 ```{r, pureplot, fig.align='center'}
 
 plot0 <- function(x, y, main = "") {
+    old.par <- par(no.readonly = TRUE)
+    on.exit(par(old.par))
+    par(mar = c(4, 4, 1, 1))
     par(mfrow = c(2, 2))
     sx <- sampleNames(x)
     sy <- sampleNames(y)
@@ -464,14 +467,74 @@ will be guided by many factors, such as degree and (non-)random nature
 of the missingness. Missing value in `MSnSet` instances can be
 filtered out and imputed using the `filterNA` and `impute` functions.
 
-```{r, impute}
-
+```{r, impute, fig.align='center')
+set.seed(1)
+qnt0 <- qnt
+exprs(qnt0)[sample(prod(dim(qnt0)), 10)] <- NA
+table(is.na(qnt0))
+qnt00 <- filterNA(qnt0)
+dim(qnt00)
+qnt.imp <- impute(qnt0)
+plot0(qnt, qnt.imp)
 ```
+
+#### Exercise
+
+The `mzt` instance created from the `mzTab` file has the following is
+a TMT 6-plex with the following design:
+
+   In this TMT 6-plex experiment, four exogenous proteins were spiked
+   into an equimolar *Erwinia carotovora* lysate with varying
+   proportions in each channel of quantitation; yeast enolase (ENO) at
+   10:5:2.5:1:2.5:10, bovine serum albumin (BSA) at 1:2.5:5:10:5:1,
+   rabbit glycogen phosphorylase (PHO) at 2:2:2:2:1:1 and bovin
+   cytochrome C (CYT) at 1:1:1:1:1:2. Proteins were then digested,
+   dierentially labelled with TMT reagents, fractionated by reverse
+   phase nano ow UPLC (nanoACQUITY, Waters), and analysed on an LTQ
+   Orbitrap Velos mass spectrometer (Thermo Scientic).
+
+Explore the `mzt` data using some of the illustrated functions. The
+heatmap and MAplot (see `MAplot` function), taken from the
+[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+vignette, have been produced using the same data.
+
+![heatmap](figure/heatmap.png)
+![maplot](figure/maplot.png)
 
 ### Statistical analysis
 
 R in general and Bioconductor in particular are particularly well
-suited for the statistical analysis of data.
+suited for the statistical analysis of data. Several packages provide
+dedicated ressources for proteomics data:
+
+- [`MSstats`](http://www.bioconductor.org/packages/release/bioc/html/MSstats.html):
+  A set of tools for statistical relative protein significance
+  analysis in DDA, SRM and DIA experiments.
+
+- [`msmsTest`](http://www.bioconductor.org/packages/release/bioc/html/msmsTests.html):
+  Statistical tests for label-free LC-MS/MS data by spectral counts,
+  to discover differentially expressed proteins between two biological
+  conditions. Three tests are available: Poisson GLM regression,
+  quasi-likelihood GLM regression, and the negative binomial of the
+  edgeR package.
+
+<!-- ```{r, msmstest} -->
+<!-- library(msmsTests) -->
+<!-- data(msms.dataset) -->
+<!-- msms.dataset -->
+<!-- e <- pp.msms.data(msms.dataset) -->
+<!-- e -->
+     
+<!-- null.f <- "y~batch" -->
+<!-- alt.f <- "y~treat+batch" -->
+<!-- div <- apply(exprs(e),2,sum) -->
+<!-- res <- msms.edgeR(e,alt.f,null.f,div=div,fnm="treat") -->
+     
+<!-- head(res) -->
+<!-- ``` -->
+
+- [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
+  also provides dedicated infrastructure for the statistical analysis of isobaric data. 
 
 ### Machine learning
 
@@ -518,7 +581,7 @@ plot(hcl, exprs(t(dunkley2006)))
 - Analysis of label-free data from a Synapt G2 (including ion
   mobility) with `synapter`.
 - Analysis of spatial proteomics data with `pRoloc`.
-
+- Analysis of MALDI data with the `MALDIquant` package.
 
 ## Session information
 
