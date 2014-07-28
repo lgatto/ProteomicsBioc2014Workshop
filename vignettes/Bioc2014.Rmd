@@ -599,6 +599,6 @@ vignette.
 
 ## Session information
 
-```{r, si}
+```{r, si, echo=FALSE}
 print(sessionInfo(), local = FALSE)
 ```
