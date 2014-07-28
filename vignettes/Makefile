@@ -6,7 +6,7 @@ ifeq (${R_HOME},)
 R_HOME= $(shell R RHOME)
 endif
 
-.PHONY: clean allclean all
+.PHONY: clean allclean all makepre
 
 Bioc2014.html: Bioc2014.Rmd
 	"$(R_HOME)/bin/Rscript" -e "library('knitr'); knit('Bioc2014.Rmd'); library('rmarkdown'); render('Bioc2014.md')"

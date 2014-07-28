@@ -1,12 +1,12 @@
 Package: ProteomicsBioc2014Workshop
 Title: Bioc2014 workshop on R / Bioconductor packages for Proteomics 
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(person("Laurent", "Gatto", role=c("aut", "cre"),
                     email="lg390@cam.ac.uk"))
 Maintainer: Laurent Gatto <lg390@cam.ac.uk>
-Suggests: knitr, RforProteomics, mzR, mzID, MSnbase, rpx,
-	  MLInterfaces, pRoloc, pRolocdata, BiocInstaller, rTANDEM,
-	  shinyTANDEM
+Suggests: RforProteomics, mzR, mzID, MSnbase, rpx, MLInterfaces,
+	  pRoloc, pRolocdata, BiocInstaller, rTANDEM, shinyTANDEM,
+	  rmarkdown, knitr
 Description: This workshop will give delegates the opportunity to
 	     discover and try some of the recent R / Bioconductor
 	     developments for proteomics. Topics covered will

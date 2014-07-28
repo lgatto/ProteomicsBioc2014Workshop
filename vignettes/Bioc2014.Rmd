@@ -1,17 +1,16 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Bioc2014}
--->
-
 ---
 title: "R / Bioconductor packages for Proteomics"
 author: "[Laurent Gatto](http://proteome.sysbiol.cam.ac.uk/lgatto/)"
 output:
   html_document:
+    theme: united	
     toc: true
-    theme: united
 ---
 
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Bioc2014}
+-->
 
 **Abstract** This workshop will give delegates the opportunity to
 discover and try some of the recent R / Bioconductor developments for
@@ -25,7 +24,6 @@ vignette/workflow including example data.
 ```{r, env, message=FALSE, echo=FALSE}
 
 library("knitr")
-
 opts_knit$set(error = FALSE)
 
 library("RforProteomics")
@@ -111,10 +109,16 @@ pxannounced()
 ```{r, pxd}
 px <- PXDataset("PXD000001")
 px
+pxfiles(px)
+
+```
+
+Other metadata for the `px` dataset:
+
+```{r, pxvar, eval=FALSE}
 pxtax(px)
 pxurl(px)
 pxref(px)
-pxfiles(px)
 ```
 
 Data files can then be downloaded with the `pxget` function as
@@ -273,6 +277,8 @@ text(1.5, 6, "assay data", cex = 1.5)
 text(4, 6, "feature\nmetadata", cex = 1.5)
 ```
 
+Another useful slot is `processingData`, accessed with `processingData(.)`, that records all the processing that objects have undergone since their creation (see examples below).
+
 The `readMSData` will parse the raw data, extract the MS2 spectra and
 construct an MS experiment file.
 
@@ -303,7 +309,12 @@ plot(msexp[[1]], full=TRUE)
 as(msexp[[1]], "data.frame")[100:105, ]
 ```
 
-### Quantitation
+### Quantitative proteomics
+
+There are a wide range of proteomics quantitation techniques that can
+broadly be classified as labelled vs. label-free, depending whether
+the features are labelled prior the MS acquisition and the MS level at
+which quantitation is inferred, namely MS1 or MS2. 
 
 ```{r, quanttab, echo=FALSE, results='asis'}
 
@@ -317,12 +328,25 @@ kable(qtb)
 
 ```
 
-An `MSnExp` is converted to an `MSnSet` by the `quantitation` method.
+In terms of raw data quantitation, most efforts have been devoted to
+MS2-level quantitation. Label-free XIC quantitation has however been
+addressed in the frame of metabolomics data processing by the
+[`xcms`](http://bioconductor.org/packages/release/bioc/html/xcms.html)
+infrastructure. 
+
+
+An `MSnExp` is converted to an `MSnSet` by the `quantitation`
+method. Below, we use the iTRAQ 4-plex isobaric tagging strategy
+(defined by the `iTRAQ4` parameter; other tags are available).
+
+```{r, itraq4plot}
+plot(msexp[[1]], full=TRUE, reporters = iTRAQ4)
+```
 
 ```{r, quantitraq}
 msset <- quantify(msexp, method = "trap", reporters = iTRAQ4, verbose=FALSE)
 exprs(msset)
-fData(msset)
+processingData(msset)
 ```
 
 Other MS2 quantitation methods available in `quantify` include the
@@ -330,24 +354,19 @@ Other MS2 quantitation methods available in `quantify` include the
 factor `SAF` or simply a simple count method.
 
 ```{r, lfms2}
-si <- quantify(msexp, method = "SIn")
-exprs(si)
-     
-saf <- quantify(msexp, method = "NSAF")
-exprs(saf)
+exprs(si <- quantify(msexp, method = "SIn"))     
+exprs(saf <- quantify(msexp, method = "NSAF"))
 ```
 
 Note that spectra that have not been assigned any peptide (`NA`) or
 that match non-unique peptides (`npsm > 1`) are discarded in the
 counting process.
 
-
-The
+**See also** The
 [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
 package supports quantitation from centroided `mgf` peak lists or its
 own tab-separated files that can be generated from Mascsot and Phenyx
 vendor files.
-
 
 ### Importing third-party data
 
@@ -358,8 +377,7 @@ molecule tabular sections.
 
 ```{r, mztab}
 mztf <- pxget(px, pxfiles(px)[2])
-mzt <- readMzTabData(mztf, what = "PEP")
-mzt
+(mzt <- readMzTabData(mztf, what = "PEP"))
 ```
 
 It is also possible to import arbitray spreadsheets as `MSnSet`
@@ -379,7 +397,21 @@ head(fData(res))
 
 ## Data processing and analysis
 
+
+
 ### Normalisation
+
+Each different types of quantitative data will require their own 
+
+The `isobar` pipeline also provides 
+
+Other data processing methods such as isobaric tags purification 
+
+
+The `combineFeatures` method combines spectra/petides quantitation
+values into protein data. The 
+
+Imputation 
 
 ### Statistical analysis
 
@@ -419,20 +451,19 @@ plot(hcl, exprs(t(dunkley2006)))
 ```
 
 
-## Visualisation
-
 ## Annotation
 - biomaRt
 - GO.db, ...
 - rols
 - hpar
 
-## Other relevant packages
+## Other relevant packages/pipelines
 
 - Analysis of post translational modification with `isobar`.
-- Spatial proteomics with `pRoloc`.
 - Analysis of label-free data from a Synapt G2 (including ion
   mobility) with `synapter`.
+- Analysis of spatial proteomics data with `pRoloc`.
+
 
 ## Session information
 
