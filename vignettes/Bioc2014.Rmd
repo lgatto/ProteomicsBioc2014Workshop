@@ -587,11 +587,16 @@ package.
 
 ## Other relevant packages/pipelines
 
-- Analysis of post translational modification with `isobar`.
+- Analysis of post translational modification with
+  [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html).
 - Analysis of label-free data from a Synapt G2 (including ion
-  mobility) with `synapter`.
-- Analysis of spatial proteomics data with `pRoloc`.
-- Analysis of MALDI data with the `MALDIquant` package.
+  mobility) with
+  [`synapter`](http://www.bioconductor.org/packages/release/bioc/html/synapter.html).
+- Analysis of spatial proteomics data with
+  [`pRoloc`](http://www.bioconductor.org/packages/release/bioc/html/pRoloc.html).
+- Analysis of MALDI data with the
+  [`MALDIquant`](http://cran.r-project.org/web/packages/MALDIquant/index.html)
+  package.
 - Access to the Protemics Standard Initiative Common QUery InterfaCe
   with the
   [`PSICQUIC`](http://www.bioconductor.org/packages/release/bioc/html/PSICQUIC.html)
